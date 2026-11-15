@@ -6,7 +6,7 @@ import doobie.*
 object Db:
   val xa: Transactor[IO] = Transactor.fromDriverManager[IO](
     "org.postgresql.Driver",
-    "jdbc:postgresql://localhost:5432/user_api",
-    "postgres",
-    "u"
+    sys.env("DB_URL"),
+    sys.env.getOrElse("DB_NAME", "postgres"),
+    sys.env("DB_PASSWORD")
   )
