@@ -1,7 +1,12 @@
 package ru.users_service.v2
 
-class UserRepository(users: Map[Long, User]){
+import doobie.ConnectionIO
+import doobie.implicits.*
 
-  def findById(id: Long): Option[User] = users.get(id)
+object UserRepository{
 
+  def findById(id: Long): ConnectionIO[Option[User]] =
+    sql"SELECT id, name, email FROM users WHERE id = $id"
+      .query[User]
+      .option
 }
