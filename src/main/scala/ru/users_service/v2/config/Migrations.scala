@@ -5,11 +5,11 @@ import org.flywaydb.core.Flyway
 
 object Migrations:
 
-  def run: IO[Unit] =
+  def run(config: DbConfig): IO[Unit] =
     IO.blocking {
       Flyway
         .configure()
-        .dataSource(sys.env("DB_URL"), sys.env("DB_USER"), sys.env("DB_PASSWORD"))
+        .dataSource(config.url, config.user, config.password)
         .load()
         .migrate()
     }.void
